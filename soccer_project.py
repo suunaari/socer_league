@@ -10,51 +10,67 @@ if __name__ == "__main__":
         experienced=[]
         non_experienced=[]
         list1=list(csv_reader)
-
- # below function creates  classifies experienced and non-experienced players
-        def players():
-            for row in list1[1:].copy():
-                if row[2]== 'YES':  # yes is for experinced players
-                    row.pop(1)      # removes hight as it is not required in the output text file
+        def experts():
+            for row in list1[1:]:
+                if row[2]=="YES":
+                    row.pop(1)
                     experienced.append(row)
-                    list1.pop(list1.index(row))
-                else:
+                else :
                     row.pop(1)
                     non_experienced.append(row)
-                    list1.pop(list1.index(row))
             return experienced , non_experienced
-
-            # the ouput of player() are teams of the league
-        players()
+        experts()
         def teams():
-            for m in experienced.copy():
-                for t in non_experienced.copy():
-                    if len(Sharks)<=(int(len(experienced+non_experienced)/3)-1):
-                        Sharks.append(t)
-                        Sharks.append(m)
-                    if len(Dragons)<=(int(len(experienced+non_experienced)/3)-1):
-                        Dragons.append(t)
-                        Dragons.append(m)
-                    if len(Raptors)<=(int(len(experienced+non_experienced)/3)-1):
-                        Raptors.append(t)
-                        Raptors.append(m)
+            for rows in  experienced:
+                if len(Sharks)<3:
+                    Sharks.append(rows)
+                    experienced.remove(rows)
+            for rows in  non_experienced:
+                if len(Sharks)<6:
+                    Sharks.append(rows)
+                    non_experienced.remove(rows)
+            for rows in  experienced:
+                if len(Dragons)<3:
+                    Dragons.append(rows)
+                    experienced.remove(rows)
+                
+            for rows in  non_experienced:
+                if len(Dragons)<6:
+                    Dragons.append(rows)
+                    non_experienced.remove(rows)
+            for rows in  experienced:
+                if len(Raptors)<3:
+                    Raptors.append(rows)
+                    
+                
+            for rows in  non_experienced:
+                if len(Raptors)<6:
+                    Raptors.append(rows)
+                    
+                
             return Sharks,Dragons,Raptors
-
+            
         teams()
-        # below  function creates  teams text file
+
+        
         def teams_file():
-            with open ("teams.text","a") as file:
+            with open ("teams.txt","a") as file:
                 file.write("Sharks")
+                file.write("\n=======")
                 file.write("\n")
                 for element in Sharks:
                     file.write(" , ".join(element))
                     file.write("\n")
+                file.write("\n"*2)
                 file.write("Dragons")
+                file.write("\n=======")
                 file.write("\n")
                 for element in Dragons:
                     file.write(" , ".join(element))
                     file.write("\n")
+                file.write("\n"*2)
                 file.write("Raptors")
+                file.write("\n=======")
                 file.write("\n")
                 for element in Raptors:
                     file.write(" , ".join(element))
